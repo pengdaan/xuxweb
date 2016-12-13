@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render,HttpResponsePermanentRedirect
 
 def index(request):
-    username=request.COOKIES.get('user','')
+    username=request.session.get('user','')
     return render(request,"index.html",{'user':username}) #返回页面
 
 
@@ -17,7 +17,7 @@ def login_action(request):
         if username=='leo'and password=='123':
             #return HttpResponse('sucess')
             response= HttpResponsePermanentRedirect('/index/')#跳转到主页
-            response.set_cookie('user',username,3600) #添加留啦紧器cookie
+            request.session['user']=username #添加浏览器cookie
             return response
 
         else:
