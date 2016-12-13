@@ -3,8 +3,8 @@ from django.http import HttpResponse
 from django.shortcuts import render,HttpResponsePermanentRedirect
 
 def index(request):
-    #return  HttpResponse('Hello')
-    return render(request,"index.html")
+    username=request.COOKIES.get('user','')
+    return render(request,"index.html",{'user':username}) #返回页面
 
 
 def login(request):
@@ -16,6 +16,9 @@ def login_action(request):
         password=request.POST.get('password','')
         if username=='leo'and password=='123':
             #return HttpResponse('sucess')
-            return HttpResponsePermanentRedirect('/event_manage/')
+            response= HttpResponsePermanentRedirect('/index/')#跳转到主页
+            response.set_cookie('user',username,3600) #添加留啦紧器cookie
+            return response
+
         else:
             return render(request,'login.html',{'error':'username or password error'})
